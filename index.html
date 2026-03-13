@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Wedding of Targani & Kariyah</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Montserrat:wght@300;400;600&family=Dancing+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --terra: #096086;
+            --cream: #e0fafe;
+            --sage: #02062c;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; scroll-behavior: smooth; }
+        body { background-color: var(--cream); color: var(--terra); font-family: 'Montserrat', sans-serif; overflow-x: hidden; text-align: center; }
+        
+        h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: 2px; }
+        .font-aesthetic { font-family: 'Dancing Script', cursive; color: var(--terra); text-transform: none; }
+
+        /* --- BACKGROUND & FALLING ELEMENTS --- */
+        .bg-fixed {
+            position: fixed; inset: 0; z-index: -2;
+            background: linear-gradient(rgba(#e6f6fa), rgba(#e6f6fa)), 
+                        url('bg.jpg');
+        }
+        #leaf-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+        .leaf { position: absolute; color: var(--terra); opacity: 0.2; animation: fall linear infinite; }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* --- COVER --- */
+        #cover {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('cover.jpg') center/cover;
+            position: fixed; inset: 0; z-index: 1100; transition: 1.5s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+        .cover-card {
+            background: var(--glass); backdrop-filter: blur(10px);
+            padding: 50px 20px; width: 85%; max-width: 400px;
+            border-radius: 200px 200px 20px 20px; border: 2px solid var(--terra);
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-float {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--glass); backdrop-filter: blur(10px);
+            padding: 12px 20px; border-radius: 50px; display: flex; gap: 20px;
+            border: 1px solid var(--terra); z-index: 1000; transition: 0.8s;
+        }
+        .nav-float.active { transform: translateX(-50%) translateY(0); }
+        .nav-float a { color: var(--terra); font-size: 1rem; text-decoration: none; display: flex; flex-direction: column; align-items: center; }
+        .nav-float span { font-size: 0.5rem; text-transform: uppercase; margin-top: 2px; }
+
+        /* --- SECTIONS --- */
+        section { padding: 80px 20px; max-width: 500px; margin: auto; }
+        .card { background: var(--white); padding: 30px 20px; border-radius: 30px; border: 1px solid rgba(188, 108, 71, 0.2); margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+
+        /* --- IMAGES --- */
+        .arch-img { width: 180px; height: 250px; margin: 0 auto 20px; border-radius: 100px 100px 10px 10px; border: 4px solid var(--white); box-shadow: 0 10px 20px rgba(0,0,0,0.1); overflow: hidden; }
+        .arch-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- BUTTONS --- */
+        .btn-terra { background: var(--terra); color: white; padding: 12px 25px; border-radius: 50px; border: none; font-weight: 600; cursor: pointer; width: 100%; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- GUEST BOOK (WISHES) --- */
+        .wishes-container { height: 300px; overflow-y: auto; background: var(--cream); border-radius: 15px; padding: 15px; margin-top: 20px; text-align: left; }
+        .wish-item { border-bottom: 1px solid rgba(188, 108, 71, 0.2); padding: 10px 0; }
+        .wish-item b { color: var(--terra); font-size: 0.9rem; }
+        .wish-item p { font-size: 0.8rem; margin-top: 5px; color: #555; }
+
+        #music-control { position: fixed; top: 20px; right: 20px; z-index: 1001; width: 40px; height: 40px; background: white; border-radius: 50%; border: 1px solid var(--terra); display: flex; align-items: center; justify-content: center; color: var(--terra); }
+        .spin { animation: rotate 5s infinite linear; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="bg-fixed"></div>
+    <div id="leaf-container"></div>
+    <audio id="song" loop><source src="backsound.mp3" type="audio/mpeg"></audio>
+    <div id="music-control" onclick="togglePlay()" class="spin"><i class="fas fa-compact-disc"></i></div>
+
+    <div id="cover">
+        <div class="cover-card" data-aos="zoom-in">
+            <p style="letter-spacing: 3px; font-size: 0.7rem; opacity: 0.8;">THE WEDDING OF</p>
+            <h1 class="font-aesthetic" style="font-size: 3rem; margin: 15px 0;">Targani & Kariyah</h1>
+            <p style="font-size: 0.8rem; margin-top: 20px;">Kepada Yth:</p>
+            <h2 id="guest-name" style="margin: 10px 0 25px; font-size: 1.2rem; border-bottom: 1px solid var(--terra); display: inline-block; padding-bottom: 5px;">Tamu Undangan</h2>
+            <button class="btn-terra" onclick="openInvitation()">Buka Undangan</button>
+        </div>
+    </div>
+
+    <div id="main-content" style="display: none;">
+        <section id="home" data-aos="fade-up">
+            <h2 class="font-aesthetic" style="font-size: 2.5rem;">Assalamu'alaikum</h2>
+            <p style="font-size: 0.85rem; margin-top: 20px; line-height: 1.8;">"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya."</p>
+            <p style="font-weight: 700; margin-top: 10px;">(QS. Ar-Rum: 21)</p>
+        </section>
+
+        <section id="couple">
+            <div class="card" data-aos="fade-up">
+                <div class="arch-img"><img src="pria.jpg"></div>
+                <h2 class="font-aesthetic" style="font-size: 2.2rem;">Targani</h2>
+                <p style="font-size: 0.8rem; font-weight: 600;">Putra dari Bapak Sudin & Ibu Carnesih</p>
+            </div>
+            <div style="font-size: 2rem; margin: 20px 0;">&</div>
+            <div class="card" data-aos="fade-up">
+                <div class="arch-img"><img src="wanita.jpg"></div>
+                <h2 class="font-aesthetic" style="font-size: 2.2rem;">Kariyah</h2>
+                <p style="font-size: 0.8rem; font-weight: 600;">Putri dari Bapak Waska & Ibu Suartati</p>
+            </div>
+        </section>
+
+        <section id="event">
+            <div class="card" style="border: 2px solid var(--terra);" data-aos="zoom-in">
+                <h2 style="margin-bottom: 20px;">Akad & Resepsi</h2>
+                <div style="margin-bottom: 20px;">
+                    <i class="far fa-calendar-alt" style="font-size: 1.5rem;"></i>
+                    <h3 style="margin-top: 10px;">Kamis, 26 Maret 2026</h3>
+                </div>
+                <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+                    <div>
+                        <b>Akad</b><br><p style="font-size: 0.8rem;">09.00 - 10.00</p>
+                    </div>
+                    <div>
+                        <b>Resepsi</b><br><p style="font-size: 0.8rem;">10.00 - Selesai</p>
+                    </div>
+                </div>
+                <p style="font-size: 0.85rem;"><strong>Lokasi:</strong><br>Kediaman Mempelai Wanita<br>Blok. Cibenoang RT 20 RW 12 Desa Mekarjaya, Gantar, Indramayu</p>
+                <button class="btn-terra" onclick="window.open('https://maps.google.com')">Navigasi Google Maps</button>
+            </div>
+        </section>
+
+        <section id="story">
+            <h2 class="font-aesthetic" style="font-size: 2.5rem; margin-bottom: 30px;">Kisah Cinta</h2>
+            <div style="position: relative; padding-left: 20px; border-left: 2px solid var(--terra); text-align: left;">
+                <div style="margin-bottom: 30px;" data-aos="fade-left">
+                    <b>2024 - Awal Bertemu</b>
+                    <p style="font-size: 0.8rem;">Takdir membawa kami pada satu titik yang sama untuk mulai saling mengenal.</p>
+                </div>
+                <div style="margin-bottom: 30px;" data-aos="fade-left" data-aos-delay="200">
+                    <b>2025 - Lamaran</b>
+                    <p style="font-size: 0.8rem;">Komitmen untuk melangkah ke jenjang yang lebih serius di hadapan orang tua.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <h2 class="font-aesthetic" style="font-size: 2.5rem; margin-bottom: 30px;">Galeri Momen</h2>
+            <div style="columns: 2; gap: 10px;">
+                <img src="g1.jpg" style="width: 100%; border-radius: 10px; margin-bottom: 10px;" data-aos="flip-left">
+                <img src="g2.jpg" style="width: 100%; border-radius: 10px; margin-bottom: 10px;" data-aos="flip-right">
+                <img src="g3.jpg" style="width: 100%; border-radius: 10px; margin-bottom: 10px;" data-aos="flip-left">
+                <img src="g4.jpg" style="width: 100%; border-radius: 10px; margin-bottom: 10px;" data-aos="flip-right">
+                <img src="g5.jpg" style="width: 100%; border-radius: 10px; margin-bottom: 10px;" data-aos="flip-right">
+                <img src="g6.jpg" style="width: 100%; border-radius: 10px; margin-bottom: 10px;" data-aos="flip-right">
+            </div>
+        </section>
+
+        <section id="gift">
+            <div class="card" data-aos="fade-up">
+                <h2>Kado Digital</h2>
+                <p style="font-size: 0.8rem; margin: 15px 0;">Tanpa mengurangi rasa hormat, bagi Anda yang ingin memberikan tanda kasih:</p>
+                <div style="background: var(--cream); padding: 15px; border-radius: 10px;">
+                    <p><b>BANK BRI</b></p>
+                    <p id="norek" style="font-size: 1.1rem; letter-spacing: 2px;">419101028485538</p>
+                    <p>A/N KARIYAH</p>
+                    <button class="btn-terra" style="padding: 5px 15px; font-size: 0.7rem; width: auto;" onclick="copyRek()">Salin Nomor</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="wishes">
+            <div class="card" data-aos="fade-up">
+                <h2>Buku Tamu</h2>
+                <input type="text" id="wish-name" placeholder="Nama Anda" style="width: 100%; padding: 10px; margin: 15px 0 10px; border-radius: 10px; border: 1px solid #ddd;">
+                <textarea id="wish-text" placeholder="Berikan ucapan & doa restu..." style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ddd; height: 80px;"></textarea>
+                <button class="btn-terra" onclick="addWish()">Kirim Ucapan</button>
+
+                <div class="wishes-container" id="wishes-list">
+                    <div class="wish-item"><b>Lisa Yulis</b><p>Sakinah Mawaddah Warahmah ya Kariyah & Targani!</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="prokes">
+            <h2 style="font-size: 1.2rem; margin-bottom: 20px;">Protokol Acara</h2>
+            <div style="display: flex; justify-content: space-around; font-size: 0.6rem;">
+                <div><i class="fas fa-mask" style="font-size: 1.5rem; color: var(--terra);"></i><br>Gunakan Masker</div>
+                <div><i class="fas fa-hands-wash" style="font-size: 1.5rem; color: var(--terra);"></i><br>Cuci Tangan</div>
+                <div><i class="fas fa-users-slash" style="font-size: 1.5rem; color: var(--terra);"></i><br>Jaga Jarak</div>
+            </div>
+        </section>
+
+        <footer style="padding: 60px 20px; background: var(--terra); color: white;">
+            <h2 class="font-aesthetic" style="color: white; font-size: 2.5rem;">Terima Kasih</h2>
+            <p style="font-size: 0.7rem; margin-top: 10px; letter-spacing: 2px;">TARGANI & KARIYAH</p>
+        </footer>
+    </div>
+
+    <nav class="nav-float" id="navbar">
+        <a href="#home"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="#couple"><i class="fas fa-heart"></i><span>Mempelai</span></a>
+        <a href="#event"><i class="fas fa-calendar"></i><span>Acara</span></a>
+        <a href="#gallery"><i class="fas fa-images"></i><span>Galeri</span></a>
+        <a href="#wishes"><i class="fas fa-envelope"></i><span>Ucapan</span></a>
+    </nav>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        AOS.init({ duration: 1000, once: false });
+
+        // Leaf Animation
+        for(let i=0; i<15; i++) {
+            let leaf = document.createElement('i');
+            leaf.className = 'fas fa-leaf leaf';
+            leaf.style.left = Math.random() * 100 + 'vw';
+            leaf.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            leaf.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            document.getElementById('leaf-container').appendChild(leaf);
+        }
+
+        const song = document.getElementById('song');
+        function openInvitation() {
+            document.getElementById('cover').style.transform = 'translateY(-100%)';
+            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('navbar').classList.add('active');
+            song.play();
+            setTimeout(() => { 
+                document.getElementById('cover').style.display = 'none';
+                AOS.refresh(); 
+            }, 1000);
+        }
+
+        function togglePlay() {
+            song.paused ? (song.play(), document.getElementById('music-control').classList.add('spin')) : 
+                          (song.pause(), document.getElementById('music-control').classList.remove('spin'));
+        }
+
+        function copyRek() {
+            navigator.clipboard.writeText("419101028485538");
+            Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Nomor rekening telah disalin.', showConfirmButton: false, timer: 1500 });
+        }
+
+        function addWish() {
+            const name = document.getElementById('wish-name').value;
+            const text = document.getElementById('wish-text').value;
+            if(!name || !text) return Swal.fire('Oops!', 'Lengkapi nama dan ucapan Anda.', 'warning');
+            
+            const list = document.getElementById('wishes-list');
+            const item = document.createElement('div');
+            item.className = 'wish-item';
+            item.innerHTML = `<b>${name}</b><p>${text}</p>`;
+            list.prepend(item);
+            
+            document.getElementById('wish-name').value = '';
+            document.getElementById('wish-text').value = '';
+            Swal.fire('Terima Kasih!', 'Ucapan Anda telah terkirim.', 'success');
+        }
+
+        const to = new URLSearchParams(window.location.search).get('to');
+        if(to) document.getElementById('guest-name').innerText = to;
+    </script>
+</body>
+</html>
